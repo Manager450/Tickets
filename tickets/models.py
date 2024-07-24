@@ -34,6 +34,7 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
+    seat_number = models.CharField(max_length=5)
     booked_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
