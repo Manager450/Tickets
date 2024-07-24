@@ -53,7 +53,7 @@
             flex-direction: column;
             align-items: center;
         }
-        input[type="text"], input[type="date"] {
+        select, input[type="date"] {
             padding: 10px;
             margin: 10px 0;
             width: 80%;
@@ -82,6 +82,8 @@
         <a href="{% url 'my_bookings' %}">My Bookings</a>
         <a href="{% url 'register' %}">Register</a>
         <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'settings' %}">Settings</a>
         <a href="{% url 'terms' %}">Terms and Conditions</a>
         <a href="{% url 'help' %}">Help</a>
         <a href="{% url 'faqs' %}">FAQs</a>
@@ -91,8 +93,20 @@
     <div class="container">
         <h1>Online Bus Ticket Booking</h1>
         <form action="{% url 'search_results' %}" method="get">
-            <input type="text" name="source" placeholder="Source" required>
-            <input type="text" name="destination" placeholder="Destination" required>
+            <select id="source" name="source" required>
+                <option value="" disabled selected>Select Source</option>
+                <option value="Accra">Accra</option>
+                <option value="Kumasi">Kumasi</option>
+                <option value="Tamale">Tamale</option>
+                <option value="Takoradi">Takoradi</option>
+            </select>
+            <select id="destination" name="destination" required>
+                <option value="" disabled selected>Select Destination</option>
+                <option value="Accra">Accra</option>
+                <option value="Kumasi">Kumasi</option>
+                <option value="Tamale">Tamale</option>
+                <option value="Takoradi">Takoradi</option>
+            </select>
             <input type="date" name="date" required>
             <button type="submit">Search</button>
         </form>

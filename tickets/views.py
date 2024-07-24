@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Bus, Booking, Payment, Review
 from .forms import BookingForm, ReviewForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 
 def home(request):
     return render(request, 'tickets/home.html')
@@ -69,9 +70,23 @@ def register(request):
         form = UserRegistrationForm()
     return render(request, 'tickets/register.html', {'form': form})
 
-def login_view(request):
-    # Handle login logic here
-    pass
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'tickets/login.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')
 
 @login_required
 def profile(request):
@@ -91,6 +106,9 @@ def help_view(request):
 
 def faqs(request):
     return render(request, 'tickets/faqs.html')
+
+def settings(request):
+    return render(request, 'tickets/settings.html')
 
 @login_required
 def review_bus(request, bus_id):

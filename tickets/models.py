@@ -1,27 +1,43 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class BusOperator(models.Model):
+    name = models.CharField(max_length=100)
+    contact_info = models.TextField()
+
+    def __str__(self):
+        return self.name
+
 class Bus(models.Model):
     name = models.CharField(max_length=100)
-    operator = models.CharField(max_length=100)
+    operator = models.ForeignKey(BusOperator, on_delete=models.CASCADE)
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
     source = models.CharField(max_length=100)
     destination = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     amenities = models.TextField()
+    bus_type = models.CharField(max_length=50)  # Add this field
 
     def __str__(self):
         return self.name
 
+class Seat(models.Model):
+    bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
+    seat_number = models.CharField(max_length=5)
+    is_available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.bus.name} - {self.seat_number}"
+
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
-    seat_number = models.CharField(max_length=5)
+    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     booked_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.bus.name} - {self.seat_number}"
+        return f"{self.user.username} - {self.bus.name} - {self.seat.seat_number}"
 
 class Payment(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE)

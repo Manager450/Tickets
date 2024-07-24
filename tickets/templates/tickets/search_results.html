@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset ="UTF-8">
     <title>Search Results - BusTicketX</title>
 </head>
 <body>
     <h1>Search Results</h1>
-    {% for bus in buses %}
-        <div>
-            <a href="{% url 'bus_details' bus.id %}">{{ bus.name }}</a>
-            <p>{{ bus.source }} to {{ bus.destination }}</p>
-            <p>Departure: {{ bus.departure_time }}</p>
-            <p>Arrival: {{ bus.arrival_time }}</p>
-        </div>
-    {% endfor %}
+    {% if buses %}
+        {% for bus in buses %}
+            <div>
+                <a href="{% url 'bus_details' bus.id %}">{{ bus.name }}</a>
+                <p>{{ bus.source }} to {{ bus.destination }}</p>
+                <p>Departure: {{ bus.departure_time }}</p>
+                <p>Arrival: {{ bus.arrival_time }}</p>
+                <p>Bus Operator: {{ bus.operator }}</p>
+                <p>Bus Type: {{ bus.bus_type }}</p>
+                <p>Seats Available: {{ bus.seats_available }}</p>
+                <p>Fare: {{ bus.fare }}</p>
+                <p>Ratings: {{ bus.ratings }}</p>
+                <p>Travel Duration: {{ bus.travel_duration }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No buses available for the selected route and date.</p>
+    {% endif %}
 </body>
 </html>
